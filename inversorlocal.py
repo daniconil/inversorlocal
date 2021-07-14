@@ -1,6 +1,6 @@
 import huawei_solar,pytz
 #IP local del inversor
-h = huawei_solar.HuaweiSolar(host="192.168.1.130")
+h = huawei_solar.HuaweiSolar(host="[IP_LOCAL_INVERSOR]")
 
 input_power = h.get("input_power")
 active_power = h.get("active_power")

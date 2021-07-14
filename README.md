@@ -75,4 +75,4 @@ Fecha y hora:        DD/MM/AAAA y son las HH:MM:SS
 
 - Este sencillo script puede ofrecerte multitud de posibilidades para crearte tu propia app ejecutado en local.
 
-- Dentro del script puedes observar otros datos de interés que pueden verse a través de terminal.
+- Dentro del script puedes observar otros datos de interés que pueden publicarse en el resultado, tales como la eficiencia, el modelo del inversor o el número de serie.

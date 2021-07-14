@@ -1,2 +1,2 @@
 # inversorlocal
-Medidor de un inversor Huawei de placas fotovoltaicas a través de la red local. Próximamente, una presentación.
+Este script sirve para leer, a través de 

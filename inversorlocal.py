@@ -1,6 +1,7 @@
-import huawei_solar,pytz
+# coding=utf-8
+import huawei_solar, pytz
 #IP local del inversor
-h = huawei_solar.HuaweiSolar(host="[IP_LOCAL_INVERSOR]")
+h = huawei_solar.HuaweiSolar(host="192.168.1.132")
 
 input_power = h.get("input_power")
 active_power = h.get("active_power")
@@ -11,7 +12,7 @@ from datetime import datetime
 tz_ES = pytz.timezone('Europe/Madrid') 
 datetime_ES = datetime.now(tz_ES)
 
-#print("Model:          " + str(h.get("model_name")))
+print("Model:          " + str(h.get("model_name")))
 #print("Model_ID:       " + str(h.get("model_id")))
 #print("Serial N:       " + str(h.get("serial_number")))
 #print("Pv_strings:     " + str(h.get("nb_pv_strings")))

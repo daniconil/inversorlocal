@@ -1,4 +1,3 @@
-# coding=utf-8
 import huawei_solar, pytz
 #IP local del inversor
 h = huawei_solar.HuaweiSolar(host="192.168.1.132")
@@ -34,9 +33,9 @@ print("Model:          " + str(h.get("model_name")))
 #print("Input power :   " + str(input_power))
 #print("Active Power:   " + str(active_power))
 #print("PM_active_power:" + str(power_meter_active_power))
-print("")
-print("Energía entrada:     "  + str(input_power.value))
-print("Energía generada:    "  + str(active_power.value))
-print("Energía exportada:   "  + str(power_meter_active_power.value))
-print("Energía consumida:   "  + str(active_power[0] - power_meter_active_power[0]))
-print("Fecha y hora:       ",datetime_ES.strftime("%d/%m/%Y y son las %H:%M:%S"))
+#print("")
+#print("Energia entrada:     "  + str("input_power.value"))
+#print("Energia generada:    "  + str("active_power.value"))
+#print("Energia exportada:   "  + str("power_meter_active_power.value"))
+#print("Energia consumida:   "  + str(active_power[0] - power_meter_active_power[0]))
+#print("Fecha y hora:       ",datetime_ES.strftime("%d/%m/%Y y son las %H:%M:%S"))

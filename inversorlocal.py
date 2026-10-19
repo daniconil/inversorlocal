@@ -1,41 +1,48 @@
-import huawei_solar,pytz
-#IP local del inversor
-h = huawei_solar.HuaweiSolar(host="[IP_LOCAL_INVERSOR]")
-
-input_power = h.get("input_power")
-active_power = h.get("active_power")
-power_meter_active_power = h.get("power_meter_active_power")
-
-#Publicar la hora local de un timezone particular
+import asyncio
+import huawei_solar
+from huawei_solar import create_tcp_client, SUN2000Device
+from huawei_solar.register_names import (
+    INPUT_POWER,
+    ACTIVE_POWER,
+    POWER_METER_ACTIVE_POWER,
+)
 from datetime import datetime
-tz_ES = pytz.timezone('Europe/Madrid') 
-datetime_ES = datetime.now(tz_ES)
+import pytz
 
-#print("Model:          " + str(h.get("model_name")))
-#print("Model_ID:       " + str(h.get("model_id")))
-#print("Serial N:       " + str(h.get("serial_number")))
-#print("Pv_strings:     " + str(h.get("nb_pv_strings")))
-#print("rated_power:    " + str(h.get("rated_power")))
-#print("Time Zone:      " + str(h.get("time_zone")))
-#print("System time:    " + str(h.get("system_time")))
-#print("")
-#print("PV01_voltage:   " + str(h.get("pv_01_voltage")))
-#print("PV01_current:   " + str(h.get("pv_01_current")))
-#print("Input power :   " + str(input_power))
-#print("Active Power:   " + str(active_power))
-#print("Reactive Power: " + str(h.get("reactive_power")))
-#print("Eficiency:      " + str(h.get("efficiency")))
-#print("Power factor:   " + str(h.get("power_factor")))
-#print("Line V A_B:     " + str(h.get("line_voltage_A_B")))
-#print("phase_A_current:" + str(h.get("phase_A_current")))
-#print("PM_active_power:" + str(power_meter_active_power))
-#print("")
-#print("Input power :   " + str(input_power))
-#print("Active Power:   " + str(active_power))
-#print("PM_active_power:" + str(power_meter_active_power))
-print("")
-print("Energía entrada:     "  + str(input_power.value))
-print("Energía generada:    "  + str(active_power.value))
-print("Energía exportada:   "  + str(power_meter_active_power.value))
-print("Energía consumida:   "  + str(active_power[0] - power_meter_active_power[0]))
-print("Fecha y hora:       ",datetime_ES.strftime("%d/%m/%Y y son las %H:%M:%S"))
+# IP local del inversor
+HOST = "192.168.0.111"
+
+
+async def main():
+    client = create_tcp_client(host=HOST)
+    device = SUN2000Device(client, "SUN2000")
+
+    try:
+        input_power = await device.get(INPUT_POWER)
+        active_power = await device.get(ACTIVE_POWER)
+        power_meter_active_power = await device.get(POWER_METER_ACTIVE_POWER)
+
+        # Publicar la hora local de un timezone particular
+        tz_ES = pytz.timezone("Europe/Madrid")
+        datetime_ES = datetime.now(tz_ES)
+
+        print("")
+        print("Energía entrada:     " + str(input_power.value))
+        print("Energía generada:    " + str(active_power.value))
+        print("Energía exportada:   " + str(power_meter_active_power.value))
+        print(
+            "Energía consumida:   "
+            + str(active_power.value - power_meter_active_power.value)
+        )
+        print(
+            "Fecha y hora:       ",
+            datetime_ES.strftime("%d/%m/%Y y son las %H:%M:%S"),
+        )
+    except Exception as e:
+        print(f"Error al leer el inversor: {e}")
+    finally:
+        await client.disconnect()
+
+
+if __name__ == "__main__":
+    asyncio.run(main())

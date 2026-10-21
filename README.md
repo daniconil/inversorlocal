@@ -6,24 +6,30 @@ Este script sirve para leer, localmente, los datos ofrecidos por inversores Huaw
 
 ## 1. Instalación de Python y dependencias
 
-Con el siguiente comando, comprobamos la versión que tenemos instalada.
+La librería **huawei-solar** requiere **Python 3.12 o superior**. Comprobamos la versión:
 
 ```
 python3 --version
 ```
 
-1.a Si no tenemos python instalado, haremos lo siguiente para hacerlo junto a las dependencias necesarias en el siguiente punto:
+Si la versión es inferior a 3.12, actualízela antes de continuar. Se recomienda usar un entorno virtual:
 
 ```
-sudo apt install python3 pip
+python3 -m venv .venv && source .venv/bin/activate
+```
+
+1.a Si no tenemos python instalado:
+
+```
+sudo apt update && sudo apt install python3 python3-pip python3-venv
 ```
 
 ## 2. Instalación de wrapper huawei-solar
 
-Instalamos la librería **huawei-solar**, que sirve de conector entre el inversor Huawei y nuestro equipo. El script utiliza la API asíncrona de la librería para comunicarse con el inversor; también requiere **pytz** para mostrar la hora local de Madrid:
+Instalamos la librería **huawei-solar** (versión 3.x) y **pytz** dentro del entorno activado:
 
 ```
-pip install huawei-solar pytz
+pip install "huawei-solar>=3.0" pytz
 ```
 Más información de huawei-solar en https://pypi.org/project/huawei-solar/
 Más información de pytz en https://pypi.org/project/pytz/
@@ -51,29 +57,30 @@ python3 inversorlocal.py
 Para observar los datos en ciclos de 2 segundos, ejecuta el siguiente comando. Cambia la cifra a tu gusto:
 
 ```
-watch -n2 python inversorlocal.py
+watch -n2 python3 inversorlocal.py
 ```
 
-## Ejemplo con valores en kWh:
+## Ejemplo con valores en W (potencia instantánea):
 
-Energía entrada:     1307                          
- > Energía que capta tu instalación fotovoltaica.
+Potencia entrada:     1307 W                            
+ > Potencia que capta tu instalación fotovoltaica del lado de la red.
 
-Energía generada:    1280                         
- > Energía que llega hasta tu sistema eléctrico. Según condiciones (cableado, distancia), es normal que se pierda un pequeño porcentaje en el camino.
+Potencia generada:    1280 W                           
+ > Potencia generada por el inversor. Según condiciones (cableado, distancia), es normal que se pierda un pequeño porcentaje en el camino.
   
-Energía exportada:   1128                           
-> Energía que no usamos y estamos vertiendo a la red.
+Potencia exportada:   1128 W                             
+> Potencia que no consumimos y estamos vertiendo a la red (flujo hacia la red pública).
 
-Energía consumida:   152                            
-> Energía que estamos en este momento.
+Potencia neta consumida:   152 W                              
+> Potencia neta que consumimos en este momento (generación menos importación neta).
 
-Fecha y hora:        DD/MM/AAAA y son las HH:MM:SS  
+Fecha y hora:        DD/MM/AAAA y son las HH:MM:SS    
 > Fecha y hora de la operación.
 
 # Notas
 
 - Se actualizó la comunicación con el inversor para adaptarla a la API asíncrona actual de `huawei-solar`, en lugar de usar la antigua interfaz `HuaweiSolar` y llamadas síncronas `.get()`. Así se crea y cierra correctamente el cliente TCP, y se leen los registros con `await device.get(...)`.
+- **Importante:** si el script finaliza con un mensaje de error, el proceso de salida devuelve código 0. Para que automatizaciones (cron, systemd, etc.) detecten fallos, ejecute el script dentro de `|| echo 'fallo'` o revise el código de retorno.
 - Este sencillo script puede ofrecerte multitud de posibilidades para crearte tu propia app ejecutado en local.
 
 - Dentro del script puedes observar otros datos de interés que pueden publicarse en el resultado, tales como la eficiencia, el modelo del inversor o el número de serie.

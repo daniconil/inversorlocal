@@ -2,6 +2,10 @@
 
 Este script sirve para leer, localmente, los datos ofrecidos por inversores Huawei de placas fotovoltaicas. Probablemente, si tienes una estructura montada de esta marca, uses Fusion Solar tanto en aplicación móvil como en navegador para acceder a tus datos de consumo, autoconsumo y exportación. Con este script, puedes obtener los datos en tiempo real.
 
+## Versión terminal y versión web
+
+Este repositorio, **inversorlocal**, permite consultar los datos del inversor desde la **terminal**. Si prefieres acceder a ellos desde el **navegador**, consulta [inversorlocal-web](https://github.com/daniconil/inversorlocal-web#readme), donde encontrarás las instrucciones de la versión web.
+
 # Requisitos
 
 ## 1. Instalación de Python y dependencias
